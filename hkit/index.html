@@ -207,18 +207,22 @@
     background-size: cover;
     background-position: center 40%;
     transform: scale(1.07);
+    filter: blur(3px); /* Subtle premium blur depth */
     animation: heroZoom 14s ease forwards;
   }
   @keyframes heroZoom { to { transform: scale(1); } }
+  
+  /* Deepened gradient lens and background blur to guarantee pristine contrast */
   .hero-gradient {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(0,0,0,0.7) 0%,
-      rgba(0,0,0,0.2) 50%,
-      rgba(0,0,0,0.0) 100%
+      rgba(15, 15, 15, 0.85) 0%,
+      rgba(15, 15, 15, 0.5) 50%,
+      rgba(15, 15, 15, 0.2) 100__;
     );
+    backdrop-filter: brightness(0.85);
   }
   .hero-content {
     position: relative;
@@ -255,6 +259,7 @@
     margin-bottom: 2rem;
     opacity: 0;
     animation: fadeUp 0.8s ease 1.6s forwards;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.15); /* Soft baseline shadow protection */
   }
   .hero h1 em {
     font-style: italic;
@@ -262,7 +267,7 @@
   }
   .hero-desc {
     font-size: 1rem;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.9);
     max-width: 520px;
     line-height: 1.75;
     margin-bottom: 2.5rem;
@@ -526,7 +531,6 @@
   .practice-card {
     position: relative;
     overflow: hidden;
-    group: true;
   }
   .practice-card-img {
     width: 100%;
@@ -670,10 +674,6 @@
     height: 1px;
     background: rgba(0,0,0,0.08);
     margin: 2rem 0;
-  }
-  .featured-meta-item span {
-    font-size: 0.9rem;
-    color: var(--warm-white);
   }
   .featured-content p {
     color: var(--muted);
@@ -1014,6 +1014,9 @@
     line-height: 1.7;
     font-weight: 300;
     max-width: 260px;
+  }
+  .footer-col {
+    block-size: min-content;
   }
   .footer-col h4 {
     font-family: var(--mono);
