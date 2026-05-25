@@ -1,1 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baran Studio Architecture | Oakland + Los Angeles</title>
+<meta name="description" content="Baran Studio Architecture — adaptive architectural solutions for developers, homeowners, and businesses. Oakland and Los Angeles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blush: #f9edf0;
+  --champagne: #e6c8b7;
+  --cognac: #c3955b;
+  --amber: #ba6a36;
+  --emerald: #1c3934;
+  --espresso: #261311;
+  --cream: #fdf9f6;
+  --white: #ffffff;
+  --text-mid: #7a6b63;
+  --text-light: #9a8a80;
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body: 'Outfit', system-ui, sans-serif;
+  --ff-mono: 'Space Mono', monospace;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--ff-body); color: var(--espresso); background: var(--cream); overflow-x: hidden; }
+::selection { background: var(--champagne); color: var(--espresso); }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+.tag { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; }
+.btn-a { display: inline-block; background: var(--amber); color: var(--cream); border: none; padding: 17px 46px; font-family: var(--ff-body); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: background .35s ease; }
+.btn-a:hover { background: var(--espresso); }
+.btn-b { display: inline-block; background: transparent; color: var(--espresso); border: 1.5px solid var(--espresso); padding: 15px 42px; font-family: var(--ff-body); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; cursor: pointer; transition: all .35s ease; }
+.btn-b:hover { background: var(--espresso); color: var(--cream); }
+.section-pad { padding: 120px 48px; }
 
+/* Grain overlay */
+.grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: .025; z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Animations */
+.fi { opacity: 0; transform: translateY(28px); }
+.fi.visible { animation: fu .9s cubic-bezier(.23,1,.32,1) forwards; }
+@keyframes fu { to { opacity: 1; transform: translateY(0); } }
+.d1 { animation-delay: .15s; } .d2 { animation-delay: .3s; } .d3 { animation-delay: .45s; } .d4 { animation-delay: .6s; }
+
+/* Nav link hover line */
+.nav-link { position: relative; display: inline-block; padding-bottom: 4px; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; color: var(--espresso); }
+.nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1.5px; background: var(--amber); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.23,1,.32,1); }
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* Card lift */
+.lift { transition: transform .5s cubic-bezier(.23,1,.32,1), box-shadow .5s ease; }
+.lift:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(38,19,17,.1); }
+
+/* Project card image zoom */
+.proj-img-wrap { overflow: hidden; height: 220px; position: relative; }
+.proj-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.23,1,.32,1); }
+.lift:hover .proj-img-wrap img { transform: scale(1.06); }
+
+/* Service card image zoom */
+.svc-img-wrap { overflow: hidden; height: 180px; }
+.svc-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.23,1,.32,1); }
+.lift:hover .svc-img-wrap img { transform: scale(1.05); }
+
+/* Form inputs */
+.form-input { width: 100%; padding: 13px 16px; border: 1px solid var(--champagne); border-radius: 3px; font-size: 14px; font-family: var(--ff-body); background: var(--cream); outline: none; transition: border-color .3s ease; }
+.form-input:focus { border-color: var(--amber); }
+.form-label { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+
+/* Type toggle buttons */
+.type-btn { flex: 1; padding: 11px 12px; border: 1.5px solid var(--champagne); border-radius: 3px; font-size: 13px; cursor: pointer; font-family: var(--ff-body); background: transparent; color: var(--text-mid); font-weight: 400; transition: all .3s ease; }
+.type-btn.active { border-color: var(--amber); background: rgba(186,106,54,.09); color: var(--amber); font-weight: 600; }
+
+/* NAV */
+.site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 72px; display: flex; justify-content: space-between; align-items: center; transition: all .4s ease; border-bottom: 1px solid transparent; }
+.site-nav.scrolled { background: rgba(253,249,246,.96); border-bottom-color: var(--champagne); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.nav-right { display: flex; gap: 32px; align-items: center; }
+
+/* HERO */
+.hero { min-height: 100vh; display: flex; align-items: stretch; position: relative; }
+.hero-content { flex: 0 0 50%; display: flex; flex-direction: column; justify-content: center; padding: 140px 48px 80px; position: relative; z-index: 2; }
+.hero-image { flex: 0 0 50%; position: relative; overflow: hidden; }
+.hero-image img { width: 100%; height: 100%; object-fit: cover; }
+.hero-image .gradient { position: absolute; inset: 0; background: linear-gradient(to right, var(--cream) 0%, transparent 30%); pointer-events: none; }
+.hero-title { font-family: var(--ff-display); font-size: 64px; font-weight: 400; line-height: 1.08; color: var(--espresso); margin-bottom: 28px; }
+.hero-title em { font-style: italic; color: var(--amber); }
+.hero-sub { font-size: 17px; line-height: 1.75; color: var(--text-mid); max-width: 480px; margin-bottom: 44px; }
+.hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+.stats-row { display: flex; gap: 40px; margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--champagne); flex-wrap: wrap; }
+.stat-num { font-family: var(--ff-display); font-size: 34px; font-weight: 400; color: var(--espresso); }
+.stat-label { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--cognac); margin-top: 2px; }
+.hero-badge { position: absolute; bottom: 32px; right: 32px; background: rgba(28,57,52,.88); backdrop-filter: blur(8px); padding: 14px 22px; border-radius: 4px; }
+
+/* PROJECTS grid */
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.proj-card { border-radius: 4px; overflow: hidden; background: var(--white); border: 1px solid rgba(230,200,183,.35); cursor: pointer; }
+.proj-card-body { padding: 20px 22px 24px; }
+.proj-card-body h3 { font-family: var(--ff-display); font-size: 22px; font-weight: 500; color: var(--espresso); margin-bottom: 6px; }
+.proj-card-body p { font-size: 13px; line-height: 1.65; color: var(--text-mid); margin-bottom: 12px; }
+.proj-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 40px 20px 14px; background: linear-gradient(transparent, rgba(38,19,17,.65)); }
+
+/* Awards strip */
+.awards-strip { margin-top: 56px; padding: 22px 32px; background: var(--emerald); border-radius: 4px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.awards-strip span { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--champagne); }
+
+/* SERVICES grid */
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.svc-card { border-radius: 4px; overflow: hidden; background: var(--white); border: 1px solid rgba(230,200,183,.35); cursor: pointer; }
+.svc-card-body { padding: 28px 26px 32px; }
+.svc-num { font-family: var(--ff-mono); font-size: 28px; font-weight: 400; color: var(--champagne); margin-bottom: 14px; }
+.svc-card-body h3 { font-family: var(--ff-display); font-size: 26px; font-weight: 500; margin-bottom: 12px; color: var(--espresso); }
+.svc-card-body p { font-size: 14px; line-height: 1.7; color: var(--text-mid); margin-bottom: 20px; }
+.svc-link { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); font-weight: 500; }
+
+/* STUDIO */
+.studio-section { padding: 120px 0; background: var(--emerald); color: var(--cream); position: relative; overflow: hidden; }
+.studio-flex { display: flex; align-items: stretch; min-height: 600px; }
+.studio-img { flex: 0 0 45%; position: relative; overflow: hidden; }
+.studio-img img { width: 100%; height: 100%; object-fit: cover; }
+.studio-img .gradient { position: absolute; inset: 0; background: linear-gradient(to left, var(--emerald) 0%, transparent 40%); pointer-events: none; }
+.studio-content { flex: 1; padding: 0 64px; display: flex; flex-direction: column; justify-content: center; }
+.values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.value-card { padding: 22px 24px; background: rgba(255,255,255,.06); border-radius: 4px; border-left: 3px solid var(--amber); }
+.value-card h4 { font-family: var(--ff-display); font-size: 20px; font-weight: 500; color: var(--cream); margin-bottom: 6px; }
+.value-card p { font-size: 12px; line-height: 1.6; color: var(--champagne); }
+
+/* PROCESS */
+.process-row { display: flex; justify-content: center; flex-wrap: wrap; }
+.process-step { flex: 1 1 200px; max-width: 250px; padding: 40px 28px; text-align: center; border-right: 1px solid var(--champagne); }
+.process-step:last-child { border-right: none; }
+.process-num { font-family: var(--ff-display); font-size: 40px; font-weight: 300; color: var(--champagne); margin-bottom: 16px; }
+.process-step h4 { font-family: var(--ff-display); font-size: 22px; font-weight: 500; color: var(--espresso); margin-bottom: 8px; }
+.process-step p { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
+.quote-strip { margin-top: 64px; border-radius: 4px; overflow: hidden; height: 300px; position: relative; }
+.quote-strip img { width: 100%; height: 100%; object-fit: cover; }
+.quote-strip .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(38,19,17,.55) 0%, transparent 60%); pointer-events: none; }
+.quote-strip .text { position: absolute; bottom: 28px; left: 32px; font-family: var(--ff-display); font-size: 24px; color: var(--cream); font-style: italic; max-width: 600px; line-height: 1.4; }
+
+/* CONTACT */
+.contact-flex { display: flex; gap: 72px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
+.contact-left { flex: 1 1 340px; min-width: 280px; }
+.contact-right { flex: 1 1 420px; min-width: 300px; }
+.contact-form { background: var(--white); padding: 40px; border-radius: 4px; border: 1px solid rgba(230,200,183,.4); }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-group { margin-bottom: 16px; }
+.type-row { display: flex; gap: 8px; }
+.contact-team-img { margin-top: 36px; border-radius: 4px; overflow: hidden; height: 180px; }
+.contact-team-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* FOOTER */
+.site-footer { padding: 56px 48px 36px; background: var(--espresso); color: var(--champagne); }
+.footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; }
+.footer-cols { display: flex; gap: 48px; }
+.footer-col p { font-size: 14px; margin-bottom: 8px; cursor: pointer; }
+.footer-col p:hover { color: var(--cream); }
+.footer-bar { border-top: 1px solid #3d2a24; padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+/* WATERMARK */
+.watermark { position: fixed; bottom: 16px; right: 16px; z-index: 10000; background: rgba(38,19,17,.92); color: var(--cream); padding: 8px 18px; border-radius: 4px; font-size: 10px; font-family: var(--ff-mono); letter-spacing: 1.5px; text-transform: uppercase; backdrop-filter: blur(8px); }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .hero { flex-direction: column; }
+  .hero-content { flex: none; padding: 120px 24px 60px; }
+  .hero-image { flex: none; height: 400px; }
+  .hero-title { font-size: 40px !important; }
+  .projects-grid, .services-grid, .values-grid { grid-template-columns: 1fr !important; }
+  .nav-right { display: none; }
+  .studio-flex { flex-direction: column; }
+  .studio-img { height: 300px; flex: none; }
+  .studio-content { padding: 48px 24px; }
+  .section-pad { padding: 80px 24px; }
+  .contact-flex { gap: 40px; }
+  .process-step { border-right: none; border-bottom: 1px solid var(--champagne); padding: 28px 20px; }
+  .process-step:last-child { border-bottom: none; }
+  .form-row-2 { grid-template-columns: 1fr; }
+  .site-nav { padding: 0 24px; }
+  .site-footer { padding: 40px 24px 28px; }
+  .awards-strip { justify-content: center; text-align: center; }
+  .stats-row { gap: 24px; }
+  .hero-badge { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ====== NAV ====== -->
+<nav class="site-nav" id="siteNav">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div style="width:38px;height:38px;background:var(--emerald);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--cream);font-family:var(--ff-display);font-size:19px;font-weight:600">B</div>
+    <div>
+      <span style="font-family:var(--ff-display);font-size:19px;font-weight:500;letter-spacing:.5px;color:var(--espresso)">Baran Studio</span>
+      <span style="font-family:var(--ff-mono);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cognac);display:block;margin-top:-2px">Architecture</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#studio" class="nav-link">Studio</a>
+    <a href="#recognition" class="nav-link">Recognition</a>
+    <a href="#contact" class="btn-a" style="padding:10px 28px;font-size:11px">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="fi tag" style="color:var(--amber);margin-bottom:20px">Oakland · Los Angeles</p>
+    <h1 class="fi d1 hero-title">We design through<br><em>deeper context.</em></h1>
+    <p class="fi d2 hero-sub">From modular housing to adaptive reuse, Baran Studio creates architecture through extensive analysis of environment, culture, and community — not just site conditions.</p>
+    <div class="fi d3 hero-btns">
+      <a href="#projects" class="btn-a">View Our Work</a>
+      <a href="#contact" class="btn-b">Book a Consultation</a>
+    </div>
+    <div class="fi d4 stats-row">
+      <div><div class="stat-num">15+</div><div class="stat-label">Years</div></div>
+      <div><div class="stat-num">2</div><div class="stat-label">Studios</div></div>
+      <div><div class="stat-num">6</div><div class="stat-label">Awards</div></div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Projects</div></div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <img src="https://static.wixstatic.com/media/af46cd_39f61457180048968949a25883b63359~mv2.jpg/v1/fill/w_1920,h_1280,al_c,q_90/af46cd_39f61457180048968949a25883b63359~mv2.jpg" alt="Baran Studio Architecture — Valley Street Residence">
+    <div class="gradient"></div>
+    <div class="hero-badge">
+      <p style="font-family:var(--ff-mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--champagne)">Featured</p>
+      <p style="font-family:var(--ff-display);font-size:16px;color:var(--cream);margin-top:2px">Valley Street Residence</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PROJECTS ====== -->
+<section id="projects" class="section-pad" style="background:var(--blush)">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;flex-wrap:wrap;gap:20px">
+    <div>
+      <p class="tag" style="color:var(--cognac);margin-bottom:10px">Selected Work</p>
+      <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--espresso)">Projects that <em style="font-style:italic">respond</em></h2>
+    </div>
+    <a href="#" class="btn-b" style="font-size:11px">Full Portfolio →</a>
+  </div>
+
+  <div class="projects-grid">
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/9267b5_d19aa374d7344e31b5a98650f83b2e54~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85/9267b5_d19aa374d7344e31b5a98650f83b2e54~mv2.jpg" alt="C.R.O.P. Campus">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Co-Living / Social</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>C.R.O.P. Campus</h3>
+        <p>23,000 sq ft co-living complex — architecture as catalyst for community rehabilitation.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">West Oakland</span>
+      </div>
+    </div>
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/af46cd_f350507d608445ceb10dc4139946a705~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85/af46cd_f350507d608445ceb10dc4139946a705~mv2.jpg" alt="MacArthur Annex">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Adaptive Reuse</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>MacArthur Annex</h3>
+        <p>Shipping containers transformed into a creative marketplace for entrepreneurs.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">Oakland</span>
+      </div>
+    </div>
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/9267b5_5a04b39c4e1b4e09a4fb5654d90b6d7b~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85/9267b5_5a04b39c4e1b4e09a4fb5654d90b6d7b~mv2.jpg" alt="Harmon Residence">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Single Family</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>Harmon Residence</h3>
+        <p>Corrugated metal and wood — a modern interpretation of traditional form.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">Oakland</span>
+      </div>
+    </div>
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/af46cd_43228ede3daa45b5bbbeef98648f60a7~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85/af46cd_43228ede3daa45b5bbbeef98648f60a7~mv2.jpg" alt="6655 Hollis">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Science &amp; Tech</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>6655 Hollis</h3>
+        <p>Lab and R&amp;D space designed for the next generation of innovation.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">Emeryville</span>
+      </div>
+    </div>
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/2cd003_fc127621a2d947c18b07dc24a98135d2~mv2.jpg/v1/fill/w_900,h_672,al_c,q_85/2cd003_fc127621a2d947c18b07dc24a98135d2~mv2.jpg" alt="Commercial TI">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Commercial</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>Commercial TI</h3>
+        <p>Tenant improvement projects that transform raw space into functional workplaces.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">Oakland</span>
+      </div>
+    </div>
+
+    <div class="proj-card lift">
+      <div class="proj-img-wrap">
+        <img src="https://static.wixstatic.com/media/9267b5_84730962d35c47dab409de2ce87444ec~mv2.jpg/v1/fill/w_900,h_600,al_c,q_85/9267b5_84730962d35c47dab409de2ce87444ec~mv2.jpg" alt="Buenavista Interiors">
+        <div class="proj-overlay"><span class="tag" style="color:var(--champagne)">Interiors</span></div>
+      </div>
+      <div class="proj-card-body">
+        <h3>Buenavista</h3>
+        <p>Interior architecture with warmth, materiality, and light as primary tools.</p>
+        <span class="tag" style="font-size:10px;color:var(--cognac)">Oakland</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="awards-strip" id="recognition">
+    <span>AIA East Bay Design Awards</span>
+    <span>PCBC Gold Nugget Award</span>
+    <span>Architizer A+ Finalist</span>
+    <span>WAN Awards Finalist</span>
+  </div>
+</section>
+
+<!-- ====== SERVICES ====== -->
+<section id="services" class="section-pad" style="background:var(--cream)">
+  <div style="max-width:560px;margin-bottom:56px">
+    <p class="tag" style="color:var(--cognac);margin-bottom:10px">How We Work</p>
+    <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--espresso);margin-bottom:18px">Comprehensive scope,<br><em style="font-style:italic">tailored engagement</em></h2>
+    <p style="font-size:15px;line-height:1.75;color:var(--text-mid)">Pre-design through post-occupancy. Every project receives the same rigor — whether it's a backyard ADU or a 50-unit mixed-use development.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="svc-card lift">
+      <div class="svc-img-wrap">
+        <img src="https://static.wixstatic.com/media/2cd003_670328cdfc904558bc297192c049f0b5~mv2.jpg/v1/fill/w_900,h_506,al_c,q_85/2cd003_670328cdfc904558bc297192c049f0b5~mv2.jpg" alt="Developer Services">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-num">01</div>
+        <h3>Developers</h3>
+        <p>Feasibility studies, entitlements, and construction-ready documentation for multi-family and mixed-use projects.</p>
+        <span class="svc-link">Learn more →</span>
+      </div>
+    </div>
+
+    <div class="svc-card lift">
+      <div class="svc-img-wrap">
+        <img src="https://static.wixstatic.com/media/2cd003_fdd80ca87ddc43d8995394fc6f48c159~mv2.jpg/v1/fill/w_900,h_506,al_c,q_85/2cd003_fdd80ca87ddc43d8995394fc6f48c159~mv2.jpg" alt="Homeowner Services">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-num">02</div>
+        <h3>Homeowners</h3>
+        <p>Custom homes, ADUs, renovations, and additions. From concept sketches through construction administration.</p>
+        <span class="svc-link">Learn more →</span>
+      </div>
+    </div>
+
+    <div class="svc-card lift">
+      <div class="svc-img-wrap">
+        <img src="https://static.wixstatic.com/media/eb29a6_5856e19046ea46e8a4b9089018389e0b~mv2.jpg/v1/fill/w_900,h_506,al_c,q_85/eb29a6_5856e19046ea46e8a4b9089018389e0b~mv2.jpg" alt="Business Services">
+      </div>
+      <div class="svc-card-body">
+        <div class="svc-num">03</div>
+        <h3>Businesses</h3>
+        <p>Commercial interiors, tenant improvements, lab/R&amp;D spaces, and adaptive reuse of existing structures.</p>
+        <span class="svc-link">Learn more →</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====== STUDIO ====== -->
+<section id="studio" class="studio-section">
+  <div class="studio-flex">
+    <div class="studio-img">
+      <img src="https://static.wixstatic.com/media/9267b5_c353c4ec5384466a8637de5dc6b58f83~mv2.jpg/v1/fill/w_1200,h_810,al_c,q_85/Group%20Photo%201_1.jpg" alt="Baran Studio Team">
+      <div class="gradient"></div>
+    </div>
+    <div class="studio-content">
+      <p class="tag" style="color:var(--cognac);margin-bottom:14px">The Studio</p>
+      <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--cream);margin-bottom:24px">A brain-trust,<br><em style="font-style:italic;color:var(--champagne)">not a hierarchy.</em></h2>
+      <p style="font-size:16px;line-height:1.8;color:var(--champagne);margin-bottom:36px;max-width:480px">Baran Studio is a diverse group of collaborators. We limit hierarchy and encourage dissent. Candor is valued as a resource, and critique is seen as a constructive way to create the best possible architecture.</p>
+      <div class="values-grid">
+        <div class="value-card"><h4>Grit</h4><p>Resourceful, determined, focused on project needs.</p></div>
+        <div class="value-card"><h4>Bravery</h4><p>Courage to push boundaries and take on risk.</p></div>
+        <div class="value-card"><h4>Respect</h4><p>Multiple perspectives produce the best solutions.</p></div>
+        <div class="value-card"><h4>Innovation</h4><p>Flexibility mixed with healthy irreverence.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== PROCESS ====== -->
+<section class="section-pad" style="background:var(--cream)">
+  <div style="text-align:center;max-width:520px;margin:0 auto 56px">
+    <p class="tag" style="color:var(--cognac);margin-bottom:10px">Our Process</p>
+    <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--espresso)">From vision<br>to <em style="font-style:italic">reality</em></h2>
+  </div>
+  <div class="process-row">
+    <div class="process-step"><div class="process-num">01</div><h4>Discovery</h4><p>Site analysis, context research, programming, and ambition mapping.</p></div>
+    <div class="process-step"><div class="process-num">02</div><h4>Concept</h4><p>Schematic design exploring form, material, and spatial ideas.</p></div>
+    <div class="process-step"><div class="process-num">03</div><h4>Development</h4><p>Construction documents, engineering coordination, and permit sets.</p></div>
+    <div class="process-step"><div class="process-num">04</div><h4>Build</h4><p>Construction administration, site visits, and quality oversight.</p></div>
+  </div>
+  <div class="quote-strip">
+    <img src="https://static.wixstatic.com/media/9267b5_687394755673402496b559ba8e9008f8~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/9267b5_687394755673402496b559ba8e9008f8~mv2.jpg" alt="Baran Studio Interior">
+    <div class="overlay"></div>
+    <div class="text">"We design with respect for the planet, for accessibility, and for the future."</div>
+  </div>
+</section>
+
+<!-- ====== CONTACT ====== -->
+<section id="contact" class="section-pad" style="background:var(--blush)">
+  <div class="contact-flex">
+    <div class="contact-left">
+      <p class="tag" style="color:var(--cognac);margin-bottom:10px">Start a Conversation</p>
+      <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--espresso);margin-bottom:22px">Let's build<br><em style="font-style:italic;color:var(--amber)">something brave.</em></h2>
+      <p style="font-size:15px;line-height:1.8;color:var(--text-mid);margin-bottom:40px">Whether you're a developer with a site, a homeowner with a vision, or a business outgrowing your space — we'd love to hear about your project.</p>
+      <div style="margin-bottom:20px">
+        <div class="tag" style="color:var(--text-light);margin-bottom:6px">Oakland HQ</div>
+        <p style="font-size:14px;color:var(--espresso)">5353 Claremont Avenue, Oakland CA 94618</p>
+      </div>
+      <div style="margin-bottom:20px">
+        <div class="tag" style="color:var(--text-light);margin-bottom:6px">Los Angeles</div>
+        <p style="font-size:14px;color:var(--espresso)">830 Traction Avenue, LA CA 90013</p>
+      </div>
+      <div style="margin-top:8px">
+        <div class="tag" style="color:var(--text-light);margin-bottom:6px">Direct</div>
+        <p style="font-size:15px;color:var(--amber);font-weight:500">(510) 595 6744</p>
+        <p style="font-size:15px;color:var(--amber);font-weight:500">hello@baranstudio.com</p>
+      </div>
+      <div class="contact-team-img">
+        <img src="https://static.wixstatic.com/media/9267b5_8c8e787730b441db924adbda8056109f~mv2.jpg/v1/fill/w_1200,h_800,al_c,q_85/Group%20Photo%204.jpg" alt="Baran Studio Team">
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-form">
+        <div class="form-row-2">
+          <div>
+            <label class="form-label">Name</label>
+            <input type="text" class="form-input" placeholder="Your name">
+          </div>
+          <div>
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="your@email.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-input" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">I am a</label>
+          <div class="type-row">
+            <button class="type-btn active" onclick="selectType(this)">Developer</button>
+            <button class="type-btn" onclick="selectType(this)">Homeowner</button>
+            <button class="type-btn" onclick="selectType(this)">Business</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">About your project</label>
+          <textarea class="form-input" rows="4" placeholder="Location, project type, timeline, budget range..." style="resize:vertical"></textarea>
+        </div>
+        <button class="btn-a" style="width:100%;border:none;cursor:pointer">Send Inquiry</button>
+        <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:12px">We respond within 24 hours on business days.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+        <div style="width:34px;height:34px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--cream);font-family:var(--ff-display);font-size:17px;font-weight:600">B</div>
+        <span style="font-family:var(--ff-display);font-size:18px;font-weight:500;color:var(--cream)">Baran Studio Architecture</span>
+      </div>
+      <p style="font-size:13px;line-height:1.65;max-width:300px;color:var(--champagne)">Adaptive architectural solutions that bridge all aspects of a design problem. Oakland + Los Angeles.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <p class="tag" style="margin-bottom:14px;color:var(--cognac)">Navigate</p>
+        <p>Projects</p><p>Services</p><p>Studio</p><p>Recognition</p><p>Contact</p>
+      </div>
+      <div class="footer-col">
+        <p class="tag" style="margin-bottom:14px;color:var(--cognac)">Connect</p>
+        <p>Instagram</p><p>LinkedIn</p><p>Facebook</p><p>Houzz</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <p style="font-size:11px;color:var(--cognac)">© 2026 Baran Studio Architecture. All rights reserved.</p>
+    <p style="font-size:11px;color:var(--cognac)">Oakland, CA &nbsp;·&nbsp; Los Angeles, CA</p>
+  </div>
+</footer>
+
+<!-- WATERMARK -->
+<div class="watermark">Redesigned by Vaunt Labs</div>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('siteNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+}, { passive: true });
+
+// Scroll-triggered fade-in
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+}, { threshold: 0.15 });
+document.querySelectorAll('.fi').forEach(el => observer.observe(el));
+
+// Type toggle
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
