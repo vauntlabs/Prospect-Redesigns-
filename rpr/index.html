@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPR Architects — Architecture, Planning & Interior Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #0b0c10;
+    --paper: #12131c;
+    --cream: #1a1b26;
+    --warm-white: #f4f5fc;
+    --sand: #656b83;
+    --terracotta: #d15a3c;
+    --forest: #1f2d3d;
+    --gold: #c5a059;
+    --muted: #7e849e;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--warm-white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Custom Cursor ── */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.3s ease, height 0.3s ease, background 0.3s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--terracotta);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s;
+    opacity: 0.5;
+  }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 18px; height: 18px; }
+  body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 60px; height: 60px; opacity: 0.2; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--sand); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--terracotta); }
+
+  /* ── Page Load Animation ── */
+  .loader {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.7s ease 0.3s, visibility 0.7s ease 0.3s;
+  }
+  .loader.done { opacity: 0; visibility: hidden; }
+  .loader-inner {
+    text-align: center;
+  }
+  .loader-wordmark {
+    font-family: var(--serif);
+    font-size: 3rem;
+    color: var(--warm-white);
+    letter-spacing: 0.3em;
+  }
+  .loader-line {
+    height: 2px;
+    background: var(--terracotta);
+    width: 0;
+    margin: 1rem auto 0;
+    animation: lineGrow 0.8s ease 0.3s forwards;
+  }
+  .loader-sub {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--sand);
+    letter-spacing: 0.2em;
+    margin-top: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.5s ease 0.7s forwards;
+  }
+  @keyframes lineGrow { to { width: 100%; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Header ── */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 800;
+    transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+  }
+  header.scrolled {
+    background: rgba(11, 12, 16, 0.97);
+    backdrop-filter: blur(12px);
+    padding: 1rem 4rem;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--warm-white);
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  nav a {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--warm-white);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--terracotta);
+    transition: width 0.3s ease;
+  }
+  nav a:hover::after { width: 100%; }
+  nav a:hover { color: var(--terracotta); }
+  .nav-contact {
+    background: var(--terracotta);
+    color: var(--warm-white) !important;
+    padding: 0.65rem 1.4rem;
+    font-size: 0.75rem !important;
+    transition: background 0.3s, transform 0.3s !important;
+  }
+  .nav-contact::after { display: none !important; }
+  .nav-contact:hover { background: var(--forest) !important; transform: translateY(-1px); }
+
+  /* ── Hero ── */
+  .hero {
+    height: 100svh;
+    min-height: 700px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1900&q=85');
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.07);
+    animation: heroZoom 14s ease forwards;
+  }
+  @keyframes heroZoom { to { transform: scale(1); } }
+  .hero-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(11,12,16,0.9) 0%,
+      rgba(11,12,16,0.4) 50%,
+      rgba(11,12,16,0.05) 100%
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 4rem 5rem;
+    max-width: 950px;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--sand);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.4s forwards;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(3.2rem, 6vw, 6rem);
+    font-weight: 400;
+    color: var(--warm-white);
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.6s forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: #e2b29f;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: rgba(244,245,252,0.7);
+    max-width: 550px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.8s forwards;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2s forwards;
+  }
+  .btn-primary {
+    background: var(--terracotta);
+    color: var(--warm-white);
+    border: none;
+    padding: 0.9rem 2rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .btn-primary:hover { background: #b04327; transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--warm-white);
+    border: 1px solid rgba(244,245,252,0.35);
+    padding: 0.9rem 2rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(244,245,252,0.7); transform: translateY(-2px); }
+
+  .hero-scroll-hint {
+    position: absolute;
+    right: 4rem;
+    bottom: 5rem;
+    writing-mode: vertical-rl;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(244,245,252,0.45);
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.3s forwards;
+  }
+  .hero-scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: rgba(244,245,252,0.3);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.3; }
+    50% { transform: scaleY(1.4); opacity: 0.8; }
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    background: var(--ink);
+    padding: 3.5rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  .stat-item {
+    border-left: 1px solid rgba(255,255,255,0.1);
+    padding-left: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .stat-item.visible { opacity: 1; transform: translateY(0); }
+  .stat-item:first-child { border-left: none; padding-left: 0; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.6rem;
+    color: var(--warm-white);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-num span { color: var(--terracotta); }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sand);
+    margin-bottom: 0.5rem;
+  }
+  .stat-desc {
+    font-size: 0.8rem;
+    color: rgba(200,185,154,0.6);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* ── Section Shared ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--terracotta);
+  }
+
+  /* ── About / Firm ── */
+  .about {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .about-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 2rem;
+    color: var(--warm-white);
+  }
+  .about-left h2 em { font-style: italic; color: var(--terracotta); }
+  .about-left p {
+    color: var(--muted);
+    line-height: 1.85;
+    font-size: 0.95rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .about-right {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%;
+    height: 560px;
+    object-fit: cover;
+    display: block;
+  }
+  .about-img-secondary {
+    position: absolute;
+    width: 55%;
+    height: 220px;
+    object-fit: cover;
+    bottom: -3rem;
+    left: -3rem;
+    border: 6px solid var(--paper);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .about-badge {
+    position: absolute;
+    top: -1.5rem;
+    right: -1.5rem;
+    width: 100px;
+    height: 100px;
+    background: var(--terracotta);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .about-badge strong {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: var(--warm-white);
+    line-height: 1;
+  }
+  .about-badge span {
+    font-family: var(--mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(253,250,244,0.75);
+    margin-top: 0.2rem;
+  }
+
+  /* ── Practice Areas ── */
+  .practice {
+    background: var(--cream);
+    padding: 8rem 4rem;
+  }
+  .practice-header {
+    max-width: 1400px;
+    margin: 0 auto 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .practice-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    max-width: 480px;
+    line-height: 1.2;
+    color: var(--warm-white);
+  }
+  .practice-header p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 300px;
+    text-align: right;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .practice-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .practice-card {
+    position: relative;
+    overflow: hidden;
+  }
+  .practice-card-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .practice-card:hover .practice-card-img { transform: scale(1.06); }
+  .practice-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(11,12,16,0.85) 0%, rgba(11,12,16,0.1) 55%, transparent 100%);
+    transition: background 0.4s;
+  }
+  .practice-card:hover .practice-card-overlay {
+    background: linear-gradient(to top, rgba(11,12,16,0.9) 0%, rgba(11,12,16,0.3) 70%, rgba(11,12,16,0.05) 100%);
+  }
+  .practice-card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.8rem;
+  }
+  .practice-card-num {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--terracotta);
+    margin-bottom: 0.4rem;
+  }
+  .practice-card-info h3 {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--warm-white);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .practice-card-desc {
+    font-size: 0.8rem;
+    color: rgba(244,245,252,0.6);
+    line-height: 1.6;
+    font-weight: 300;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+  }
+  .practice-card:hover .practice-card-desc { max-height: 80px; opacity: 1; }
+  .practice-card-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: opacity 0.4s 0.1s, transform 0.4s 0.1s;
+  }
+  .practice-card:hover .practice-card-arrow { opacity: 1; transform: translateX(0); }
+  .practice-card-arrow::after { content: '→'; }
+
+  /* ── Featured Project ── */
+  .featured {
+    padding: 8rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .featured-img-wrap {
+    position: relative;
+  }
+  .featured-img {
+    width: 100%;
+    height: 620px;
+    object-fit: cover;
+    display: block;
+  }
+  .featured-tag {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    background: var(--terracotta);
+    color: var(--warm-white);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+  }
+  .featured-counter {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: rgba(244,245,252,0.5);
+    letter-spacing: 0.1em;
+  }
+  .featured-content h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    color: var(--warm-white);
+  }
+  .featured-meta {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .featured-meta-item strong {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+  .featured-meta-item span {
+    font-size: 0.9rem;
+    color: var(--warm-white);
+  }
+  .featured-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 2rem 0;
+  }
+  .featured-content p {
+    color: var(--muted);
+    line-height: 1.85;
+    font-size: 0.93rem;
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── Work Grid ── */
+  .work {
+    background: var(--ink);
+    padding: 8rem 4rem;
+  }
+  .work-header {
+    max-width: 1400px;
+    margin: 0 auto 4rem;
+  }
+  .work-header .section-label { color: var(--sand); }
+  .work-header .section-label::before { background: var(--terracotta); }
+  .work-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    color: var(--warm-white);
+  }
+  .work-mosaic {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 1rem;
+  }
+  .mosaic-item {
+    overflow: hidden;
+    position: relative;
+  }
+  .mosaic-item.a { grid-column: span 7; height: 480px; }
+  .mosaic-item.b { grid-column: span 5; height: 480px; }
+  .mosaic-item.c { grid-column: span 4; height: 340px; }
+  .mosaic-item.d { grid-column: span 4; height: 340px; }
+  .mosaic-item.e { grid-column: span 4; height: 340px; }
+  .mosaic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .mosaic-item:hover img { transform: scale(1.06); }
+  .mosaic-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(11,12,16,0);
+    transition: background 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.8rem;
+  }
+  .mosaic-item:hover .mosaic-overlay { background: rgba(11,12,16,0.65); }
+  .mosaic-label {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--warm-white);
+    font-weight: 400;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .mosaic-sub {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--sand);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s 0.05s, transform 0.4s 0.05s;
+  }
+  .mosaic-item:hover .mosaic-label,
+  .mosaic-item:hover .mosaic-sub { opacity: 1; transform: translateY(0); }
+
+  /* ── Testimonial ── */
+  .testimonial {
+    padding: 8rem 4rem;
+    background: var(--forest);
+    text-align: center;
+  }
+  .testimonial blockquote {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--warm-white);
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.4;
+  }
+  .testimonial blockquote em { color: #fcc2b3; font-style: normal; }
+  .testimonial-attr {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(244,245,252,0.6);
+    text-transform: uppercase;
+  }
+  .testimonial-line {
+    width: 40px;
+    height: 1px;
+    background: var(--terracotta);
+    margin: 0 auto 2rem;
+  }
+
+  /* ── Contact ── */
+  .contact {
+    background: var(--cream);
+    padding: 8rem 4rem;
+  }
+  .contact-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .contact-info h2 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: var(--warm-white);
+  }
+  .contact-info h2 em { font-style: italic; color: var(--terracotta); }
+  .contact-info p {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 0.93rem;
+    font-weight: 300;
+    margin-bottom: 3rem;
+  }
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .contact-detail-item strong {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+  .contact-detail-item span {
+    font-size: 0.9rem;
+    color: var(--warm-white);
+  }
+  .contact-form {
+    background: var(--paper);
+    padding: 3rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+  label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  input, select, textarea {
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom-color: rgba(255,255,255,0.15);
+    color: var(--warm-white);
+    padding: 0.75rem 0;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 300;
+    transition: border 0.3s;
+    width: 100%;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  input::placeholder, textarea::placeholder { color: var(--sand); opacity: 0.5; }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-bottom-color: var(--terracotta);
+  }
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='%23656b83'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.2rem center;
+    padding-right: 1.5rem;
+  }
+  select option { background: #1a1b26; color: var(--warm-white); }
+  textarea { resize: vertical; min-height: 100px; }
+  .submit-btn {
+    width: 100%;
+    background: var(--terracotta);
+    color: var(--warm-white);
+    border: none;
+    padding: 1.1rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: none;
+    margin-top: 1rem;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .submit-btn:hover { background: #b04327; transform: translateY(-1px); }
+  .form-section-title {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 1.4rem;
+    margin-top: 0.5rem;
+  }
+  .form-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 1.5rem 0 2rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--ink);
+    padding: 5rem 4rem 3rem;
+  }
+  .footer-top {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 2.5rem;
+  }
+  .footer-brand .wordmark { font-size: 1.4rem; color: var(--warm-white); }
+  .footer-brand p {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--sand);
+    line-height: 1.7;
+    font-weight: 300;
+    max-width: 260px;
+  }
+  .footer-col h4 {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 1.2rem;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(244,245,252,0.6);
+    text-decoration: none;
+    margin-bottom: 0.7rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--warm-white); }
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: rgba(244,245,252,0.35);
+    text-transform: uppercase;
+  }
+  .social-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .social-links a {
+    color: rgba(244,245,252,0.4);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .social-links a:hover { color: var(--warm-white); }
+
+  /* ── Awards Banner ── */
+  .awards {
+    background: var(--terracotta);
+    padding: 1.8rem 4rem;
+    overflow: hidden;
+  }
+  .awards-track {
+    display: flex;
+    gap: 5rem;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  .awards-track span {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(253,250,244,0.8);
+    flex-shrink: 0;
+  }
+  .awards-track span strong { color: var(--warm-white); }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    header, .hero-content, .about, .practice, .featured, .work, .testimonial, .contact, footer { padding-left: 2rem; padding-right: 2rem; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .practice-grid { grid-template-columns: repeat(2, 1fr); }
+    .about { grid-template-columns: 1fr; gap: 3rem; }
+    .about-right { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    header { padding: 1.2rem 1.5rem; }
+    nav { gap: 1rem; }
+    nav a:not(.nav-contact) { display: none; }
+    .hero-content { padding: 0 1.5rem 4rem; }
+    .hero-scroll-hint { display: none; }
+    .stats-bar { grid-template-columns: 1fr 1fr; padding: 2.5rem 1.5rem; gap: 1.5rem; }
+    .practice-grid { grid-template-columns: 1fr; }
+    .featured-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .work-mosaic .mosaic-item { grid-column: span 12 !important; height: 280px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-top { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-wordmark">RPR</div>
+    <div class="loader-line"></div>
+    <div class="loader-sub">Architects · Planning · Interiors</div>
+  </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<header id="header">
+  <a class="wordmark" href="#">RPR</a>
+  <nav>
+    <a href="#practice">Expertise</a>
+    <a href="#work">Portfolio</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="nav-contact">Inquire Now</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Architecture · Planning · Interior Design</div>
+    <h1>Spaces crafted<br>with <em>precision</em><br>and longevity</h1>
+    <p class="hero-desc">We deliver timeless architecture across commercial, healthcare, historic adaptive reuse, and luxury custom residential markets through rigorous master planning and creative engineering.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">View Portfolio</a>
+      <a href="#contact" class="btn-ghost">Start Your Project</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">Scroll to discover</div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item reveal">
+    <div class="stat-num">25<span>+</span></div>
+    <div class="stat-label">Years of Innovation</div>
+    <div class="stat-desc">A quarter-century of technical precision and structural design</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-num">150<span>+</span></div>
+    <div class="stat-label">Projects Completed</div>
+    <div class="stat-desc">From complex medical facilities to custom historic estates</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Core Disciplines</div>
+    <div class="stat-desc">Commercial, Healthcare, Preservation, and Luxury Residential</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <div class="stat-num">100<span>%</span></div>
+    <div class="stat-label">BIM Integrated</div>
+    <div class="stat-desc">Advanced data-driven rendering for hyper-accurate delivery</div>
+  </div>
+</div>
+
+<div class="awards">
+  <div class="awards-track">
+    <span><strong>Modern Preservation Awards</strong> — 2025 Winner</span>
+    <span><strong>St. Jude Outpatient Wing</strong> — Architectural Merit</span>
+    <span><strong>The Landmark Tower</strong> — Urban Excellence</span>
+    <span><strong>AIA Regional Honors</strong> — Best Commercial Space</span>
+    <span><strong>Modern Preservation Awards</strong> — 2025 Winner</span>
+    <span><strong>St. Jude Outpatient Wing</strong> — Architectural Merit</span>
+    <span><strong>The Landmark Tower</strong> — Urban Excellence</span>
+    <span><strong>AIA Regional Honors</strong> — Best Commercial Space</span>
+  </div>
+</div>
+
+<section id="about" style="background: var(--paper);">
+  <div class="about">
+    <div class="about-left">
+      <div class="section-label reveal">The Studio</div>
+      <h2 class="reveal reveal-delay-1">A philosophy built on structural integrity and artistic execution</h2>
+      <p class="reveal reveal-delay-2">RPR Architects coordinates master architectural planning, zoning consulting, and interior architecture under one integrated workflow. We believe that masterful buildings grow from deep contextual analysis, budget alignment, and uncompromising details.</p>
+      <p class="reveal reveal-delay-2">Our studio environment fosters high-touch, partner-level collaboration on every commission. Whether executing a mission-critical clinical renovation or a legacy private home, our process eliminates friction between programmatic intent and realized form.</p>
+      <a href="#contact" class="btn-primary reveal reveal-delay-3" style="margin-top: 1rem;">Partner With Us</a>
+    </div>
+    <div class="about-right reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80" alt="RPR Architects workspace" class="about-img-main">
+      <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=500&q=80" alt="Detail material palette" class="about-img-secondary">
+      <div class="about-badge">
+        <strong>Est.</strong>
+        <span>Studio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="practice" class="practice">
+  <div class="practice-header">
+    <div>
+      <div class="section-label reveal">Expertise</div>
+      <h2 class="reveal reveal-delay-1">Targeted Solutions,<br>Unified Execution</h2>
+    </div>
+    <p class="reveal reveal-delay-2">Four targeted practice wings bring distinct technical specialists together under a unified modern aesthetic.</p>
+  </div>
+  <div class="practice-grid">
+    <div class="practice-card reveal">
+      <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" alt="Commercial Portfolio" class="practice-card-img">
+      <div class="practice-card-overlay"></div>
+      <div class="practice-card-info">
+        <div class="practice-card-num">01 /</div>
+        <h3>Commercial</h3>
+        <div class="practice-card-desc">Efficient, branding-integrated corporate headquarters, tech hubs, and mixed-use urban blocks.</div>
+        <div class="practice-card-arrow">Explore Architecture</div>
+      </div>
+    </div>
+    <div class="practice-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80" alt="Healthcare Portfolio" class="practice-card-img">
+      <div class="practice-card-overlay"></div>
+      <div class="practice-card-info">
+        <div class="practice-card-num">02 /</div>
+        <h3>Healthcare</h3>
+        <div class="practice-card-desc">Patient-first clinical corridors, surgery environments, and high-performance laboratory floor plans.</div>
+        <div class="practice-card-arrow">Explore Architecture</div>
+      </div>
+    </div>
+    <div class="practice-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" alt="Historic Preservation" class="practice-card-img">
+      <div class="practice-card-overlay"></div>
+      <div class="practice-card-info">
+        <div class="practice-card-num">03 /</div>
+        <h3>Adaptive Reuse</h3>
+        <div class="practice-card-desc">Honoring local historical character while seamlessly upgrading structural envelopes for modern building codes.</div>
+        <div class="practice-card-arrow">Explore Architecture</div>
+      </div>
+    </div>
+    <div class="practice-card reveal reveal-delay-3">
+      <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80" alt="Custom Residences" class="practice-card-img">
+      <div class="practice-card-overlay"></div>
+      <div class="practice-card-info">
+        <div class="practice-card-num">04 /</div>
+        <h3>Custom Homes</h3>
+        <div class="practice-card-desc">Ultra-premium luxury estates matching site typography, tailored sunlight paths, and elite lifestyles.</div>
+        <div class="practice-card-arrow">Explore Architecture</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="featured-inner">
+    <div class="featured-img-wrap reveal">
+      <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80" alt="The Apex Estate" class="featured-img">
+      <div class="featured-tag">Featured Project</div>
+      <div class="featured-counter" style="color: rgba(244,245,252,0.5)">01 / 04</div>
+    </div>
+    <div class="featured-content">
+      <div class="section-label reveal">Spotlight</div>
+      <h2 class="reveal reveal-delay-1">The Apex Residential Complex</h2>
+      <div class="featured-meta reveal reveal-delay-2">
+        <div class="featured-meta-item">
+          <strong>Type</strong>
+          <span>High-End Residential</span>
+        </div>
+        <div class="featured-meta-item">
+          <strong>Location</strong>
+          <span>Metropolitan Area</span>
+        </div>
+        <div class="featured-meta-item">
+          <strong>Status</strong>
+          <span>Built / Active</span>
+        </div>
+      </div>
+      <div class="featured-divider"></div>
+      <p class="reveal reveal-delay-2">An exploration of minimal lines and complex structural engineering. The project balances soaring concrete spans with warm organic cedar components, maximizing landscape sightlines while conserving natural energy patterns.</p>
+      <a href="#work" class="btn-primary reveal reveal-delay-3">View All Projects</a>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="work">
+  <div class="work-header">
+    <div class="section-label reveal">Portfolio</div>
+    <h2 class="reveal reveal-delay-1">Selected Works</h2>
+  </div>
+  <div class="work-mosaic">
+    <div class="mosaic-item a reveal">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80" alt="Corporate Headquarters">
+      <div class="mosaic-overlay">
+        <div class="mosaic-label">Avenue HQ Corporate Center</div>
+        <div class="mosaic-sub">Commercial · Corporate Wing</div>
+      </div>
+    </div>
+    <div class="mosaic-item b reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=700&q=80" alt="Medical Clinic">
+      <div class="mosaic-overlay">
+        <div class="mosaic-label">Northside Surgical Annex</div>
+        <div class="mosaic-sub">Healthcare · Specialist Facility</div>
+      </div>
+    </div>
+    <div class="mosaic-item c reveal">
+      <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80" alt="Loft Conversion">
+      <div class="mosaic-overlay">
+        <div class="mosaic-label">The Foundry Lofts</div>
+        <div class="mosaic-sub">Adaptive Reuse · Historic Precinct</div>
+      </div>
+    </div>
+    <div class="mosaic-item d reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1618219908412-a29a1bb7b86e?auto=format&fit=crop&w=600&q=80" alt="Modern Interior Space">
+      <div class="mosaic-overlay">
+        <div class="mosaic-label">Linear Glass Office Atrium</div>
+        <div class="mosaic-sub">Interiors · Corporate Atrium</div>
+      </div>
+    </div>
+    <div class="mosaic-item e reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80" alt="Luxury Villa">
+      <div class="mosaic-overlay">
+        <div class="mosaic-label">The Obsidian Waterfront Villa</div>
+        <div class="mosaic-sub">Custom Residential · Private Client</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="testimonial-line reveal"></div>
+  <blockquote class="reveal reveal-delay-1">"RPR Architects brought a standard of <em>meticulous project management</em> and structural innovation that converted a highly restrictive zoning code challenge into an award-winning landmark workspace."</blockquote>
+  <div class="testimonial-attr reveal reveal-delay-2">— Chief Operating Officer · Urban Development Group</div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="section-label reveal">Let's Connect</div>
+      <h2 class="reveal reveal-delay-1">Initiate a formal project <em>evaluation</em></h2>
+      <p class="reveal reveal-delay-2">We review institutional, corporate, and private architectural briefs globally. Complete our onboarding criteria checklist below to connect directly with our principal design partners.</p>
+      <div class="contact-details reveal reveal-delay-3">
+        <div class="contact-detail-item">
+          <strong>Main Office</strong>
+          <span>Studio Suite 400 · Corporate Plaza District</span>
+        </div>
+        <div class="contact-detail-item">
+          <strong>Digital Communications</strong>
+          <span>Inquiries: projects@rprarchitects.com</span>
+        </div>
+        <div class="contact-detail-item">
+          <strong>Connect</strong>
+          <span>
+            <a href="#" style="color:var(--terracotta); text-decoration:none;">LinkedIn</a> ·
+            <a href="#" style="color:var(--terracotta); text-decoration:none;">Instagram</a> ·
+            <a href="#" style="color:var(--terracotta); text-decoration:none;">Vimeo Portfolio</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <form class="contact-form" onsubmit="alert('Thank you — RPR project review board will reply via secure channels.'); return false;">
+
+        <div class="form-section-title">Client Identity</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" placeholder="Alex" required>
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" placeholder="Vance" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" placeholder="vance@enterprise.com" required>
+          </div>
+          <div class="form-group">
+            <label>Direct Phone Number</label>
+            <input type="tel" placeholder="+1 (555) 019-2834">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Corporate Entity / Client Title</label>
+            <input type="text" placeholder="Enterprise Development LLC">
+          </div>
+          <div class="form-group">
+            <label>Your Role</label>
+            <select>
+              <option value="" disabled selected>Select stakeholder position…</option>
+              <option>Managing Partner / Director</option>
+              <option>Healthcare Executive Director</option>
+              <option>Municipal Lead Officer</option>
+              <option>General Contractor Representative</option>
+              <option>Private Estate Owner</option>
+              <option>Other Institutional Representative</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section-title">Core Architecture Parameters</div>
+        <div class="form-group">
+          <label>Primary Practice Alignment *</label>
+          <select required>
+            <option value="" disabled selected>Select space categorization…</option>
+            <option>Commercial — Corporate Core / Shell</option>
+            <option>Commercial — Mixed-Use Retail Blocks</option>
+            <option>Healthcare — Ambulatory / Acute Clinical Space</option>
+            <option>Healthcare — Bioresearch / Labs</option>
+            <option>Adaptive Reuse — Historic Structure Renovation</option>
+            <option>Custom Residential — Ultra-Premium Villa</option>
+            <option>Master Planning & Urban Zoning Advisory</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Proposed Site Location (City/State)</label>
+            <input type="text" placeholder="Austin, TX">
+          </div>
+          <div class="form-group">
+            <label>Approximate Square Footage Scale</label>
+            <select>
+              <option value="" disabled selected>Select dimensional range…</option>
+              <option>Under 4,000 sq ft</option>
+              <option>4,000 – 15,000 sq ft</option>
+              <option>15,000 – 75,000 sq ft</option>
+              <option>75,000 sq ft +</option>
+              <option>Undetermined / Preliminary Phase</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Volume Metrics (Residential Units / Commercial Floors)</label>
+            <select>
+              <option value="" disabled selected>Select scope target…</option>
+              <option>Single Occupancy / Single Floor</option>
+              <option>2 – 5 stories / Multi-Unit Commercial</option>
+              <option>6 – 12 stories / Complex Core</option>
+              <option>High-Rise Development</option>
+              <option>Not Applicable</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Anticipated Structural Height</label>
+            <select>
+              <option value="" disabled selected>Select elevation framework…</option>
+              <option>1–2 stories</option>
+              <option>3–5 stories</option>
+              <option>6+ stories</option>
+              <option>TBD / Massing Study Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section-title">Real Estate Status & Financing</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Site Entitlements / Land Control *</label>
+            <select required>
+              <option value="" disabled selected>Select current position…</option>
+              <option>Site completely owned — Deed finalized</option>
+              <option>Under active option contract / due diligence</option>
+              <option>Assembling parcels / site not identified</option>
+              <option>Advisory request / assistance required</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Capital Structuring / Funding Mechanism</label>
+            <select>
+              <option value="" disabled selected>Select capital channel…</option>
+              <option>Private Equity / Self-Funded</option>
+              <option>Commercial Loan Package Secured</option>
+              <option>Public Appropriation / Bond Pipeline</option>
+              <option>Joint Venture Capital Syndicate</option>
+              <option>Formulating Financial Presentation</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Target Capital Allocation (Construction Budget) *</label>
+            <select required>
+              <option value="" disabled selected>Select budget scale…</option>
+              <option>Under $2.5M (Feasibility Review Only)</option>
+              <option>$2.5M – $10M</option>
+              <option>$10M – $40M</option>
+              <option>$40M+</option>
+              <option>Currently drafting cash-flow modeling</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Deployment Urgency Window *</label>
+            <select required>
+              <option value="" disabled selected>Select schedule phase…</option>
+              <option>Immediate mobilization (Within 45 days)</option>
+              <option>Design kickoff target: 3–6 months</option>
+              <option>Design kickoff target: 6–12 months</option>
+              <option>Speculative master planning pipeline</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-section-title">Professional Mandates Needed</div>
+        <div class="form-group">
+          <label>Services Configuration</label>
+          <select>
+            <option value="" disabled selected>Select structural requirement…</option>
+            <option>Comprehensive Services (Schematic Layout through Handover)</option>
+            <option>Zoning Approvals, Variances & Massing Feasibility Study Only</option>
+            <option>Interior Architecture & Spatial Design Package</option>
+            <option>Master Urban Integration Layout Planning</option>
+            <option>Renovation Engineering & Envelope Remediation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Zoning / Municipal Alignment Position</label>
+          <select>
+            <option value="" disabled selected>Select approval status…</option>
+            <option>Zoning clear — Site completely permitted</option>
+            <option>Zoning variants filed — Hearing processing</option>
+            <option>Pre-application status — Code evaluation required</option>
+            <option>Requires complete re-zoning advocacy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Environmental Compliance Mandates</label>
+          <select>
+            <option value="" disabled selected>Select sustainability framework…</option>
+            <option>Net-Zero Grid Performance / Carbon Neutrality</option>
+            <option>LEED Platinum / Gold Certification Standards</option>
+            <option>High Performance Envelope / Wellness Standards</option>
+            <option>Standard baseline building code structural performance</option>
+            <option>TBD Based on Pro Forma Performance Metrics</option>
+          </select>
+        </div>
+
+        <div class="form-divider"></div>
+
+        <div class="form-group">
+          <label>Architectural Directive, Site Complexities & Objectives</label>
+          <textarea rows="5" placeholder="Detail your operational goals, structural constraints, stylistic directives, or required utility components. Deep context enables our team to construct a highly accurate preliminary overview."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Architecture Brief</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a class="wordmark" href="#">RPR</a>
+      <p>Delivering spatial intelligence and structural longevity across high-performance architectural sectors since inception.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Expertise</h4>
+      <a href="#">Commercial</a>
+      <a href="#">Healthcare</a>
+      <a href="#">Adaptive Reuse</a>
+      <a href="#">Residences</a>
+    </div>
+    <div class="footer-col">
+      <h4>Studio</h4>
+      <a href="#">Our Culture</a>
+      <a href="#">Design Principals</a>
+      <a href="#">BIM Technology</a>
+      <a href="#">Careers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <a href="#">Portfolio</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">Secure Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 RPR Architects. All rights reserved.</span>
+    <div class="social-links">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+    </div>
+    <span>Architecture · Planning · Interior Design</span>
+  </div>
+</footer>
+
+<script>
+  // Page Load Animation Sequence
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('done');
+    }, 1800);
+  });
+
+  // Custom Fluid Dual-Cursor Mechanics
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px';
+    cursor.style.top = mouseY + 'px';
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12;
+    ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Dynamic Header Scroll Adaptation
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Intersection Observer for Reveal Triggers
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .stat-item').forEach(el => observer.observe(el));
+
+  // Anchor Navigation Link Smooth Scroll System
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
