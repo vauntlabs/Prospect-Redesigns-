@@ -68,13 +68,41 @@ a { text-decoration: none; color: inherit; }
 .lift:hover .svc-img-wrap img { transform: scale(1.05); }
 
 /* Form inputs */
-.form-input { width: 100%; padding: 13px 16px; border: 1px solid var(--champagne); border-radius: 3px; font-size: 14px; font-family: var(--ff-body); background: var(--cream); outline: none; transition: border-color .3s ease; }
-.form-input:focus { border-color: var(--amber); }
+.form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--champagne); border-radius: 3px; font-size: 14px; font-family: var(--ff-body); background: var(--cream); outline: none; transition: border-color .3s ease, box-shadow .3s ease; }
+.form-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(186,106,54,.08); }
 .form-label { display: block; font-family: var(--ff-mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+.form-label-desc { display: block; font-family: var(--ff-body); font-size: 12px; color: var(--text-mid); margin-top: 3px; letter-spacing: 0; text-transform: none; font-weight: 300; line-height: 1.5; }
+.form-select { width: 100%; padding: 14px 16px; border: 1px solid var(--champagne); border-radius: 3px; font-size: 14px; font-family: var(--ff-body); background: var(--cream); outline: none; transition: border-color .3s ease, box-shadow .3s ease; appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a8a80' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; }
+.form-select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(186,106,54,.08); }
 
-/* Type toggle buttons */
-.type-btn { flex: 1; padding: 11px 12px; border: 1.5px solid var(--champagne); border-radius: 3px; font-size: 13px; cursor: pointer; font-family: var(--ff-body); background: transparent; color: var(--text-mid); font-weight: 400; transition: all .3s ease; }
-.type-btn.active { border-color: var(--amber); background: rgba(186,106,54,.09); color: var(--amber); font-weight: 600; }
+/* Radio pill groups */
+.radio-pill-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.radio-pill { display: none; }
+.radio-pill-label { display: inline-block; padding: 10px 18px; border: 1px solid var(--champagne); border-radius: 3px; font-size: 13px; font-family: var(--ff-body); color: var(--text-mid); cursor: pointer; transition: all .3s ease; user-select: none; text-align: center; }
+.radio-pill-label:hover { border-color: var(--cognac); color: var(--espresso); }
+.radio-pill:checked + .radio-pill-label { border-color: var(--amber); background: rgba(186,106,54,.09); color: var(--amber); font-weight: 600; }
+
+/* Radio inline (yes/no) */
+.radio-inline-group { display: flex; gap: 10px; }
+.radio-inline-group .radio-pill-label { flex: 1; text-align: center; padding: 12px 16px; }
+
+/* Form section dividers */
+.form-divider { height: 1px; background: var(--champagne); opacity: .4; margin: 24px 0; }
+.form-section-tag { font-family: var(--ff-mono); font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--cognac); margin-bottom: 16px; display: block; }
+
+/* Required asterisk */
+.req::after { content: ' *'; color: var(--amber); font-weight: 400; }
+
+/* Thank you screen */
+.thank-you { text-align: center; padding: 48px 24px; }
+.thank-you .check-circle { width: 64px; height: 64px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+.thank-you .check-circle svg { width: 28px; height: 28px; stroke: var(--cream); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.thank-you h3 { font-family: var(--ff-display); font-size: 28px; font-weight: 400; color: var(--espresso); margin-bottom: 12px; }
+.thank-you p { font-size: 14px; line-height: 1.7; color: var(--text-mid); max-width: 380px; margin: 0 auto; }
+.thank-you .referral-section { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--champagne); }
+.thank-you .referral-select { max-width: 320px; margin: 12px auto 0; }
 
 /* NAV */
 .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 48px; height: 72px; display: flex; justify-content: space-between; align-items: center; transition: all .4s ease; border-bottom: 1px solid transparent; }
@@ -142,10 +170,10 @@ a { text-decoration: none; color: inherit; }
 .quote-strip .text { position: absolute; bottom: 28px; left: 32px; font-family: var(--ff-display); font-size: 24px; color: var(--cream); font-style: italic; max-width: 600px; line-height: 1.4; }
 
 /* CONTACT */
-.contact-flex { display: flex; gap: 72px; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
-.contact-left { flex: 1 1 340px; min-width: 280px; }
-.contact-right { flex: 1 1 420px; min-width: 300px; }
-.contact-form { background: var(--white); padding: 40px; border-radius: 4px; border: 1px solid rgba(230,200,183,.4); }
+.contact-flex { display: flex; gap: 72px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+.contact-left { flex: 1 1 320px; min-width: 280px; }
+.contact-right { flex: 1 1 520px; min-width: 340px; }
+.contact-form { background: var(--white); padding: 44px; border-radius: 4px; border: 1px solid rgba(230,200,183,.4); }
 .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 .form-group { margin-bottom: 16px; }
 .type-row { display: flex; gap: 8px; }
@@ -424,7 +452,7 @@ a { text-decoration: none; color: inherit; }
     <div class="contact-left">
       <p class="tag" style="color:var(--cognac);margin-bottom:10px">Start a Conversation</p>
       <h2 style="font-family:var(--ff-display);font-size:46px;font-weight:400;color:var(--espresso);margin-bottom:22px">Let's build<br><em style="font-style:italic;color:var(--amber)">something brave.</em></h2>
-      <p style="font-size:15px;line-height:1.8;color:var(--text-mid);margin-bottom:40px">Whether you're a developer with a site, a homeowner with a vision, or a business outgrowing your space — we'd love to hear about your project.</p>
+      <p style="font-size:15px;line-height:1.8;color:var(--text-mid);margin-bottom:40px">Tell us about your project. The more detail you share, the better we can prepare for our first conversation. Every field helps us understand your vision before we ever get on a call.</p>
       <div style="margin-bottom:20px">
         <div class="tag" style="color:var(--text-light);margin-bottom:6px">Oakland HQ</div>
         <p style="font-size:14px;color:var(--espresso)">5353 Claremont Avenue, Oakland CA 94618</p>
@@ -443,35 +471,114 @@ a { text-decoration: none; color: inherit; }
       </div>
     </div>
     <div class="contact-right">
-      <div class="contact-form">
+      <div class="contact-form" id="inquiryFormWrap">
+
+        <span class="form-section-tag">Your Details</span>
+
+        <!-- Name & Email -->
         <div class="form-row-2">
           <div>
-            <label class="form-label">Name</label>
-            <input type="text" class="form-input" placeholder="Your name">
+            <label class="form-label req" for="f-name">Name</label>
+            <input type="text" id="f-name" class="form-input" placeholder="Your full name" required>
           </div>
           <div>
-            <label class="form-label">Email</label>
-            <input type="email" class="form-input" placeholder="your@email.com">
+            <label class="form-label req" for="f-email">Email</label>
+            <input type="email" id="f-email" class="form-input" placeholder="your@email.com" required>
           </div>
         </div>
+
+        <!-- Phone -->
         <div class="form-group">
-          <label class="form-label">Phone</label>
-          <input type="tel" class="form-input" placeholder="+1 (555) 000-0000">
+          <label class="form-label" for="f-phone">Phone <span style="font-weight:300;text-transform:none;letter-spacing:0;font-size:10px;color:var(--text-light)">(optional)</span></label>
+          <input type="tel" id="f-phone" class="form-input" placeholder="+1 (555) 000-0000">
         </div>
+
+        <div class="form-divider"></div>
+        <span class="form-section-tag">About Your Project</span>
+
+        <!-- Project Type -->
         <div class="form-group">
-          <label class="form-label">I am a</label>
-          <div class="type-row">
-            <button class="type-btn active" onclick="selectType(this)">Developer</button>
-            <button class="type-btn" onclick="selectType(this)">Homeowner</button>
-            <button class="type-btn" onclick="selectType(this)">Business</button>
+          <label class="form-label req">Project Type</label>
+          <div class="radio-pill-group" id="f-project-type">
+            <input type="radio" name="project_type" id="pt-1" value="New construction (Residential)" class="radio-pill"><label for="pt-1" class="radio-pill-label">New Construction — Residential</label>
+            <input type="radio" name="project_type" id="pt-2" value="New construction (Commercial)" class="radio-pill"><label for="pt-2" class="radio-pill-label">New Construction — Commercial</label>
+            <input type="radio" name="project_type" id="pt-3" value="Major renovation / Addition" class="radio-pill"><label for="pt-3" class="radio-pill-label">Major Renovation / Addition</label>
+            <input type="radio" name="project_type" id="pt-4" value="Interior redesign" class="radio-pill"><label for="pt-4" class="radio-pill-label">Interior Redesign</label>
+            <input type="radio" name="project_type" id="pt-5" value="Landscape / Outdoor living" class="radio-pill"><label for="pt-5" class="radio-pill-label">Landscape / Outdoor</label>
+            <input type="radio" name="project_type" id="pt-6" value="Not sure yet" class="radio-pill"><label for="pt-6" class="radio-pill-label">Not Sure Yet</label>
           </div>
         </div>
+
+        <!-- Project Location -->
         <div class="form-group">
-          <label class="form-label">About your project</label>
-          <textarea class="form-input" rows="4" placeholder="Location, project type, timeline, budget range..." style="resize:vertical"></textarea>
+          <label class="form-label req" for="f-location">Project Location</label>
+          <input type="text" id="f-location" class="form-input" placeholder="City, State or Region" required>
         </div>
-        <button class="btn-a" style="width:100%;border:none;cursor:pointer">Send Inquiry</button>
+
+        <!-- Property Status -->
+        <div class="form-group">
+          <label class="form-label req">Do you currently own the land or property?</label>
+          <div class="radio-pill-group" id="f-property-status">
+            <input type="radio" name="property_status" id="ps-1" value="Yes, I own it" class="radio-pill"><label for="ps-1" class="radio-pill-label">Yes, I own it</label>
+            <input type="radio" name="property_status" id="ps-2" value="Under contract / Closing soon" class="radio-pill"><label for="ps-2" class="radio-pill-label">Under contract</label>
+            <input type="radio" name="property_status" id="ps-3" value="Still looking" class="radio-pill"><label for="ps-3" class="radio-pill-label">Still looking</label>
+            <input type="radio" name="property_status" id="ps-4" value="Existing property to renovate" class="radio-pill"><label for="ps-4" class="radio-pill-label">Existing property to renovate</label>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+        <span class="form-section-tag">Budget & Timeline</span>
+
+        <!-- Budget -->
+        <div class="form-group">
+          <label class="form-label req" for="f-budget">Estimated Full Project Budget
+            <span class="form-label-desc">Total build cost, not just design fees</span>
+          </label>
+          <select id="f-budget" class="form-select" required>
+            <option value="" disabled selected>Select a range</option>
+            <option value="Under $150K">Under $150K</option>
+            <option value="$150K–$500K">$150K – $500K</option>
+            <option value="$500K–$1M">$500K – $1M</option>
+            <option value="$1M+">$1M+</option>
+            <option value="Not determined">I haven't determined a budget yet</option>
+          </select>
+        </div>
+
+        <!-- Timeline -->
+        <div class="form-group">
+          <label class="form-label req" for="f-timeline">Ideal Timeline to Break Ground</label>
+          <select id="f-timeline" class="form-select" required>
+            <option value="" disabled selected>Select a timeline</option>
+            <option value="Within 3 months">Within 3 months</option>
+            <option value="3–6 months">3 – 6 months</option>
+            <option value="6–12 months">6 – 12 months</option>
+            <option value="12+ months / No rush">12+ months / No rush</option>
+            <option value="Not sure">Not sure</option>
+          </select>
+        </div>
+
+        <!-- Experience -->
+        <div class="form-group">
+          <label class="form-label req">Have you worked with an architect before?</label>
+          <div class="radio-inline-group" id="f-experience">
+            <input type="radio" name="experience" id="exp-1" value="Yes" class="radio-pill"><label for="exp-1" class="radio-pill-label">Yes</label>
+            <input type="radio" name="experience" id="exp-2" value="No, this is my first time" class="radio-pill"><label for="exp-2" class="radio-pill-label">No, first time</label>
+          </div>
+        </div>
+
+        <div class="form-divider"></div>
+        <span class="form-section-tag">Your Vision</span>
+
+        <!-- Project Vision -->
+        <div class="form-group">
+          <label class="form-label req" for="f-vision">Tell us about your vision for this project</label>
+          <textarea id="f-vision" class="form-input" rows="4" placeholder="Describe the atmosphere, specific goals, or lifestyle needs you have for this space..." style="resize:vertical" required></textarea>
+        </div>
+
+        <!-- Submit -->
+        <button type="button" class="btn-a" id="submitBtn" onclick="handleSubmit()" style="width:100%;border:none;cursor:pointer;margin-top:8px">Send Inquiry</button>
         <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:12px">We respond within 24 hours on business days.</p>
+
       </div>
     </div>
   </div>
@@ -520,10 +627,204 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll('.fi').forEach(el => observer.observe(el));
 
-// Type toggle
-function selectType(btn) {
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+// ========================================
+// LEAD QUALIFICATION SCORING ENGINE
+// ========================================
+
+function getRadioValue(name) {
+  const checked = document.querySelector(`input[name="${name}"]:checked`);
+  return checked ? checked.value : '';
+}
+
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+}
+
+function calculateLeadScore(data) {
+  let score = 0;
+
+  // Property Status scoring
+  if (data.property_status === 'Yes, I own it' || data.property_status === 'Existing property to renovate') {
+    score += 3;
+  } else if (data.property_status === 'Still looking') {
+    score -= 2;
+  }
+
+  // Budget scoring
+  if (data.budget === '$500K–$1M' || data.budget === '$1M+') {
+    score += 3;
+  } else if (data.budget === 'Not determined') {
+    score -= 1;
+  }
+
+  // Timeline scoring
+  if (data.timeline === 'Within 3 months' || data.timeline === '3–6 months') {
+    score += 2;
+  } else if (data.timeline === '12+ months / No rush') {
+    score -= 2;
+  }
+
+  // Experience scoring
+  if (data.experience === 'Yes') {
+    score += 2;
+  }
+
+  // Vision depth scoring
+  if (countWords(data.vision) > 50) {
+    score += 1;
+  }
+
+  return score;
+}
+
+function getScoreTier(score) {
+  if (score >= 8) return 'HOT';
+  if (score >= 5) return 'WARM';
+  if (score >= 2) return 'COOL';
+  return 'COLD';
+}
+
+// ========================================
+// FORM SUBMISSION HANDLER
+// ========================================
+
+function handleSubmit() {
+  const btn = document.getElementById('submitBtn');
+  const wrap = document.getElementById('inquiryFormWrap');
+
+  // Collect field values
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const project_type = getRadioValue('project_type');
+  const location = document.getElementById('f-location').value.trim();
+  const property_status = getRadioValue('property_status');
+  const budget = document.getElementById('f-budget').value;
+  const timeline = document.getElementById('f-timeline').value;
+  const experience = getRadioValue('experience');
+  const vision = document.getElementById('f-vision').value.trim();
+
+  // Validation
+  const missing = [];
+  if (!name) missing.push('Name');
+  if (!email) missing.push('Email');
+  if (!project_type) missing.push('Project Type');
+  if (!location) missing.push('Project Location');
+  if (!property_status) missing.push('Property Status');
+  if (!budget) missing.push('Budget');
+  if (!timeline) missing.push('Timeline');
+  if (!experience) missing.push('Architect Experience');
+  if (!vision) missing.push('Project Vision');
+
+  if (missing.length > 0) {
+    // Highlight first missing required field
+    alert('Please complete the following: ' + missing.join(', '));
+    return;
+  }
+
+  // Email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  // Build data payload
+  const formData = {
+    name,
+    email,
+    phone: phone || null,
+    project_type,
+    location,
+    property_status,
+    budget,
+    timeline,
+    experience,
+    vision
+  };
+
+  // Calculate lead score
+  const lead_score = calculateLeadScore(formData);
+  const score_tier = getScoreTier(lead_score);
+
+  // Final payload for Supabase insert
+  const payload = {
+    ...formData,
+    lead_score,
+    score_tier,
+    submitted_at: new Date().toISOString(),
+    status: 'new',
+    referral_source: null // captured post-submit
+  };
+
+  // === MOCK SUPABASE INSERT ===
+  console.log('──────────────────────────────────────');
+  console.log('📋 LEAD SUBMISSION PAYLOAD');
+  console.log('──────────────────────────────────────');
+  console.table(formData);
+  console.log(`🎯 Lead Score: ${lead_score} (${score_tier})`);
+  console.log('📦 Full Supabase Payload:', JSON.stringify(payload, null, 2));
+  console.log('──────────────────────────────────────');
+
+  // Mock fetch — replace URL with actual Supabase endpoint
+  /*
+  fetch('https://rpwpjihawgywpwwuwzyy.supabase.co/rest/v1/inquiries', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': 'YOUR_SUPABASE_ANON_KEY',
+      'Authorization': 'Bearer YOUR_SUPABASE_ANON_KEY'
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .then(data => console.log('✅ Saved to Supabase:', data))
+  .catch(err => console.error('❌ Supabase error:', err));
+  */
+
+  // === SHOW THANK YOU SCREEN ===
+  btn.textContent = 'Sending...';
+  btn.style.opacity = '0.6';
+  btn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    wrap.style.opacity = '0';
+    wrap.style.transform = 'translateY(10px)';
+    wrap.style.transition = 'opacity .4s ease, transform .4s ease';
+
+    setTimeout(() => {
+      wrap.innerHTML = `
+        <div class="thank-you">
+          <div class="check-circle">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <h3>Thank you, ${name.split(' ')[0]}.</h3>
+          <p>We've received your project details and will be in touch within 24 hours. We're excited to learn more about your vision.</p>
+          <div class="referral-section">
+            <label class="form-label" for="f-referral" style="text-align:center">One last thing — how did you find us?</label>
+            <select id="f-referral" class="form-select referral-select" onchange="captureReferral(this.value)">
+              <option value="" disabled selected>Select one</option>
+              <option value="Google search">Google search</option>
+              <option value="Instagram">Instagram</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Referral from a friend">Referral from a friend</option>
+              <option value="Houzz">Houzz</option>
+              <option value="Drove by a project">Drove by a project</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      `;
+      wrap.style.opacity = '1';
+      wrap.style.transform = 'translateY(0)';
+    }, 400);
+  }, 600);
+}
+
+function captureReferral(value) {
+  console.log('📣 Referral source captured:', value);
+  // In production: PATCH the Supabase row with referral_source = value
+  const el = document.getElementById('f-referral');
+  el.parentElement.innerHTML = `<p style="font-size:13px;color:var(--cognac);text-align:center;margin-top:16px;font-family:var(--ff-mono);letter-spacing:1px;text-transform:uppercase">Got it — thank you!</p>`;
 }
 </script>
 
